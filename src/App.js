@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import Board from './components/Board';
-import data from './sampleData';
 import Home from './components/pages/Home';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PageNotFound from './components/pages/PageNotFound';
@@ -11,8 +10,22 @@ class App extends React.Component{
   state = {
     boards: []
   }
-  componentDidMount() {
-    this.setState({ boards: data.boards })
+ 
+  getBoards = async userId => {
+    try{
+      this.setState({ boards: [] })
+      const boards = await boardsRef.get()
+      boards.forEach(board => {
+        const data = board.data().board 
+        const boardObj = {
+          id: board.id,
+          ...data 
+        }
+        this.setState({ boards: [...this.state.boards, boardObj] })
+      })
+    } catch (error) {
+      console.log('Error getting boards', error)
+    }
   }
   createNewBoard = async board => {
     try { 
@@ -36,6 +49,7 @@ class App extends React.Component{
               render={(props) => (
                 <Home 
                   {...props}
+                  getBoards={this.getBoards}
                   boards={this.state.boards} 
                   createNewBoard={this.createNewBoard} 
                 />
