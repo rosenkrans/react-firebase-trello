@@ -1,7 +1,7 @@
 import React from 'react';
 import BoardPreview from '../BoardPreview';
 import PropTypes from 'prop-types';
-import CreateBoardForm from '../CreateBordForm';
+import CreateBoardForm from '../CreateBoardForm';
 
 class Home extends React.Component{
   render(){
