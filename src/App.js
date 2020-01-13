@@ -5,6 +5,7 @@ import data from './sampleData';
 import Home from './components/pages/Home';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PageNotFound from './components/pages/PageNotFound';
+import { boardsRef } from './firebase';
 
 class App extends React.Component{
   state = {
@@ -13,8 +14,17 @@ class App extends React.Component{
   componentDidMount() {
     this.setState({ boards: data.boards })
   }
-  createNewBoard = board => {
-    this.setState({ boards: [...this.state.boards, board] })
+  createNewBoard = async board => {
+    try { 
+      const newBoard = await boardsRef.add({ board })
+      const boardObj = {
+        id: newBoard.id,
+        ...board
+      }
+      this.setState({ boards: [...this.state.boards, boardObj] })
+    } catch(error) {
+        console.error('Error creating new board: ', error)
+    }
   }
   render() {
     return (
