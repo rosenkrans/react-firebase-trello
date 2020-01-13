@@ -21,18 +21,25 @@ class App extends React.Component{
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path='/'
-              render={() => (
+            <Route 
+              exact path='/:userId/boards'
+              render={(props) => (
                 <Home 
+                  {...props}
                   boards={this.state.boards} 
                   createNewBoard={this.createNewBoard} 
                 />
               )}
             />
-            <Route path='/board' component={Board} />
+            <Route path='/board/:boardId' 
+              render={props => (
+                <Board 
+                  {...props}
+                />
+              )}
+            />
             <Route component={PageNotFound} />
-            {/* 
-            <Board /> */}
+            
           </Switch>
         </BrowserRouter>
       </div>
