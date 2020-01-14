@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {cardsRef} from '../firebase'
+import EditCardModal from './EditCardModal';
 
 class Card extends React.Component {
+  state = {
+    modalOpen: false
+  }
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen })
+  }
+
   deleteCard = async e => {
     try {
       e.preventDefault()
@@ -15,12 +23,18 @@ class Card extends React.Component {
   }
   render(){
     return(
-      <div className="card">
-        <div className="card-body">
-          <p>{this.props.data.text}</p>
-          <span onClick={this.deleteCard}>&times;</span>
+      <React.Fragment>
+        <div className="card">
+          <div className="card-body">
+            <p onClick={this.toggleModal}>{this.props.data.text}</p>
+            <span onClick={this.deleteCard}>&times;</span>
+          </div>
         </div>
-      </div>
+        <EditCardModal 
+          modalOpen={this.state.modalOpen} 
+          toggleModal={this.toggleModal}
+        />
+      </React.Fragment>
     )
   }
 }
