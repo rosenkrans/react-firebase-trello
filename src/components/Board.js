@@ -14,31 +14,33 @@ class Board extends React.Component{
   }
   getLists = async boardId => {
     try{
-      const lists = await listsRef
+      await listsRef
       .where('list.board', '==', boardId)
       .orderBy('list.createdAt')
       .onSnapshot(snapshot => {
         snapshot.docChanges()
         .forEach(change => {
-          const doc = change.doc
-          const list = {
+          if(change.type === 'added') {
+            const doc = change.doc
+            const list = {
             id: doc.id,
             title: doc.data().list.title
           }
           this.setState({
             currentLists: [...this.state.currentLists, list]
           })
+          }
+          if(change.type === 'removed') {
+            this.setState({
+              currentLists: [
+                ...this.state.currentLists.filter(list => {
+                  return list.id !== change.doc.id
+                })
+              ]
+            })
+          }
         })
       })
-      // .get()
-      // lists.forEach(list => {
-      //   const data = list.data().list
-      //   const listObj = {
-      //     id: list.id,
-      //     ...data 
-      //   }
-      //   this.setState({ currentLists: [...this.state.currentLists, listObj] })
-      // })
     } catch (error){
       console.error('Error getting lists: ', error)
     }
