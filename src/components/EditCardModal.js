@@ -1,5 +1,6 @@
 import React from 'react';
 import { cardsRef } from '../firebase';
+import PropTypes from 'prop-types';
 
 class EditCardModal extends React.Component {
   state = {
@@ -21,19 +22,34 @@ class EditCardModal extends React.Component {
   }
 
   textInput = React.createRef()
-  
+
   updateCard = async e => {
     try{
       e.preventDefault()
       const cardId = this.props.cardData.id 
       const newText = this.textInput.current.value 
+      const labels = this.state.selectedLabels
       const card = await cardsRef.doc(cardId)
       card.update({
-        'card.text': newText 
+        'card.text': newText,
+        'card.labels': labels
       })
       this.props.toggleModal()
     } catch (error) {
       console.error('Error updating cards: ', error)
+    }
+  }
+
+  setLabel = label => {
+    const labels = [...this.state.selectedLabels]
+    if(labels.includes(label)) {
+      const newLabels = labels.filter((element) => {
+        return element !== label
+      })
+      this.setState({ seelectedLabels: newLabels })
+    } else {
+      labels.push(label)
+      this.setState({ selectedLabels: labels})
     }
   }
 
@@ -51,7 +67,13 @@ class EditCardModal extends React.Component {
               >&times;</span>
               <p className='label-title'>add / remove labels:</p>
               {this.state.availableLabels.map(label => {
-                return <span className='label' style={{ background: label }}></span>
+                return <span 
+                  onClick={() => this.setLabel(label)}
+                  className='label' 
+                  style={{ background: label }}
+                >
+
+                </span>
               })}
               <hr />
             </div>
@@ -70,7 +92,7 @@ class EditCardModal extends React.Component {
             <div>
               <p className='label-title'>labels:</p>
               {this.state.selectedLabels.map((label) => {
-                return <span classname='label' style={{ background: label }} key={label}></span>
+                return <span className='label' style={{ background: label }} key={label}></span>
               })}
               <button type="submit">Save Changes</button>
             </div>
@@ -79,6 +101,12 @@ class EditCardModal extends React.Component {
       </div>
     )
   }
+}
+
+EditCardModal.propTypes = {
+  modalOpen: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  cardData: PropTypes.object.isRequired
 }
 
 export default EditCardModal

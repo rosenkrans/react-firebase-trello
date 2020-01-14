@@ -25,6 +25,11 @@ class Card extends React.Component {
     return(
       <React.Fragment>
         <div className="card">
+          <div className='card-labels'>
+            {this.props.data.labels.map(label => {
+              return <span key={label} style={{ background: label }} className='label'></span>
+            })}
+          </div>
           <div className="card-body">
             <p onClick={this.toggleModal}>{this.props.data.text}</p>
             <span onClick={this.deleteCard}>&times;</span>
