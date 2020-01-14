@@ -8,7 +8,7 @@ class Card extends React.Component {
   state = {
     modalOpen: false
   }
-  
+
   toggleModal = () => {
     this.setState({ modalOpen: !this.state.modalOpen })
   }
@@ -34,7 +34,6 @@ class Card extends React.Component {
             })}
           </div>
           <div className="card-body">
-            {/* <p onClick={this.toggleModal}>{this.props.data.text}</p> */}
             <TextareaAutosize
               onClick={this.toggleModal}
               readOnly

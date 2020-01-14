@@ -73,22 +73,14 @@ class EditCardModal extends React.Component {
                   onClick={() => this.setLabel(label)}
                   className='label' 
                   style={{ background: label }}
-                >
-
-                </span>
+                ></span>
               })}
               <hr />
             </div>
 
             <div className='edit-area'>
               <span className='edit-icon'>&#x270E;</span>
-              {/* <input 
-                className='textbox-edit'
-                defaultValue={this.props.cardData.text}
-                ref={this.textInput}
-              >
-
-              </input> */}
+              
               <TextareaAutosize
                 className='textbox-edit'
                 defaultValue={this.props.cardData.text}
