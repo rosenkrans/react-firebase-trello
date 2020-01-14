@@ -3,7 +3,6 @@ import Card from './Card';
 import PropTypes from 'prop-types';
 import { cardsRef, listsRef} from '../firebase';
 
-
 class List extends React.Component {
   state = {
     currentCards: []
@@ -19,7 +18,7 @@ class List extends React.Component {
       const cards = await cardsRef
         .where('card.listId', '==', listId)
         .get()
-        if(cards.docs.length != 0){
+        if(cards.docs.length !== 0){
           cards.forEach(card => {
             card.ref.delete()
           })
@@ -70,6 +69,11 @@ class List extends React.Component {
         console.error('Error fetching new card: ', error)
       }
   }
+
+  deleteList = () => {
+    const listId = this.props.list.id
+    this.props.deleteList(listId)
+  }
   render() {
     return(
       <div className='list'>
@@ -100,7 +104,8 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  list: PropTypes.object.isRequired
+  list: PropTypes.object.isRequired,
+  deleteList: PropTypes.func.isRequired
 }
 
 export default List;

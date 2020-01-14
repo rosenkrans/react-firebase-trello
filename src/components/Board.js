@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './List';
 import { boardsRef, listsRef } from '../firebase';
+import PropTypes from 'prop-types'
 
 class Board extends React.Component{
   state = {
@@ -57,6 +58,12 @@ class Board extends React.Component{
         console.error('Error creating a new list: ', error)
       }
   }
+
+  deleteBoard = async () => {
+    const boardId = this.props.match.params.boardId 
+    this.props.deleteBoard(boardId)
+  }
+
   render(){
     return(
       <div 
@@ -67,21 +74,23 @@ class Board extends React.Component{
       >
         <div className='board-header'>
           <h3>{this.state.currentBoard.title}</h3>
-          <button>Delete Board</button>
+          <button onClick={this.deleteBoard}>Delete Board</button>
         </div>
         <div className="lists-wrapper">
           
           {Object.keys(this.state.currentLists).map(key => (
             <List 
-            key = {this.state.currentLists[key].id} 
-            list={this.state.currentLists[key]} />
+              key = {this.state.currentLists[key].id} 
+              list={this.state.currentLists[key]} 
+              deleteList={this.props.deleteList}
+            />
           ))}
         
         </div>
 
         <form 
-        onSubmit={this.createNewList}
-        className='new-list-wrapper'
+          onSubmit={this.createNewList}
+          className='new-list-wrapper'
         >
           <input
             type='text'
@@ -95,6 +104,10 @@ class Board extends React.Component{
   }
 }
 
-
+Board.propTypes = {
+  deleteBoard: PropTypes.func.isRequired,
+  deleteList: PropTypes.func.isRequired,
+  
+}
 export default Board;
 
