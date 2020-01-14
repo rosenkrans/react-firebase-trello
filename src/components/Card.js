@@ -33,6 +33,7 @@ class Card extends React.Component {
         <EditCardModal 
           modalOpen={this.state.modalOpen} 
           toggleModal={this.toggleModal}
+          cardData={this.props.data}
         />
       </React.Fragment>
     )
