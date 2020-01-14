@@ -27,7 +27,7 @@ class Board extends React.Component{
         this.setState({ currentLists: [...this.state.currentLists, listObj] })
       })
     } catch (error){
-      console.log('Error getting lists: ', error)
+      console.error('Error getting lists: ', error)
     }
   }
   getBoard = async boardId => {
@@ -35,7 +35,7 @@ class Board extends React.Component{
       const board = await boardsRef.doc(boardId).get()
       this.setState({ currentBoard: board.data().board })
     } catch (error) {
-      console.log('Error getting boards', error)
+      console.error('Error getting boards', error)
     }
   }
 
@@ -64,6 +64,14 @@ class Board extends React.Component{
     this.props.deleteBoard(boardId)
   }
 
+  updateBoard = e => {
+    const boardId = this.props.match.params.boardId 
+    const newTitle = e.currentTarget.value 
+    if(boardId && newTitle) {
+      this.props.updateBoard(boardId, newTitle)
+    }
+  }
+
   render(){
     return(
       <div 
@@ -73,8 +81,15 @@ class Board extends React.Component{
         }}
       >
         <div className='board-header'>
-          <h3>{this.state.currentBoard.title}</h3>
-          <button onClick={this.deleteBoard}>Delete Board</button>
+          {/* <h3>{this.state.currentBoard.title}</h3> */}
+          <input 
+            type='text'
+            name='boardTitle'
+            onChange={this.updateBoard}
+            defaultValue={this.state.currentBoard.title}
+          />
+               
+        <button onClick={this.deleteBoard}>Delete Board</button>
         </div>
         <div className="lists-wrapper">
           
@@ -107,7 +122,7 @@ class Board extends React.Component{
 Board.propTypes = {
   deleteBoard: PropTypes.func.isRequired,
   deleteList: PropTypes.func.isRequired,
-  
+  updateBoard: PropTypes.func.isRequired 
 }
 export default Board;
 

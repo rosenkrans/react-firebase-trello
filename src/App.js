@@ -81,6 +81,15 @@ class App extends React.Component{
     }
   }
 
+  updateBoard = async (boardId, newTitle) => {
+    try {
+      const board = await boardsRef.doc(boardId)
+      board.update({ 'board.title': newTitle })
+    } catch (error) {
+      console.error('Error updating the board: ', error)
+    }
+  }
+
   render() {
     return (
       <div>
@@ -101,6 +110,7 @@ class App extends React.Component{
               render={props => (
                 <Board 
                   {...props}
+                  updateBoard={this.updateBoard}
                   deleteBoard={this.deleteBoard}
                   deleteList={this.deleteList}
                 />
