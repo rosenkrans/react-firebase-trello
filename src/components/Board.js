@@ -8,10 +8,12 @@ class Board extends React.Component{
     currentBoard: {},
     currentLists: []
   }
+
   componentDidMount() {
     this.getBoard(this.props.match.params.boardId)
     this.getLists(this.props.match.params.boardId)
   }
+
   getLists = async boardId => {
     try{
       await listsRef
@@ -45,6 +47,7 @@ class Board extends React.Component{
       console.error('Error getting lists: ', error)
     }
   }
+  
   getBoard = async boardId => {
     try{
       const board = await boardsRef.doc(boardId).get()

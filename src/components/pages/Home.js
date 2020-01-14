@@ -7,6 +7,7 @@ class Home extends React.Component{
   componentDidMount() {
     this.props.getBoards()
   }
+  
   render(){
     return(
       <div>

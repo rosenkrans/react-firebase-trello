@@ -27,6 +27,7 @@ class App extends React.Component{
       console.log('Error getting boards', error)
     }
   }
+  
   createNewBoard = async board => {
     try { 
       const newBoard = await boardsRef.add({ board })

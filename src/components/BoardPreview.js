@@ -9,6 +9,7 @@ class BoardPreview extends React.Component{
       pathname: `/board/${boardId}`
     })
   }
+
   render(){
     return(
       <ul 
@@ -26,5 +27,6 @@ class BoardPreview extends React.Component{
 BoardPreview.propTypes = {
   board: PropTypes.object.isRequired
 }
+
 export default withRouter(BoardPreview);
 
