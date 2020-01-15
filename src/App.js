@@ -5,6 +5,7 @@ import Home from './components/pages/Home';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PageNotFound from './components/pages/PageNotFound';
 import { boardsRef, listsRef, cardsRef } from './firebase';
+import { AuthProvider } from './components/AuthContext';
 
 class App extends React.Component{
   state = {
@@ -27,7 +28,7 @@ class App extends React.Component{
       console.log('Error getting boards', error)
     }
   }
-  
+
   createNewBoard = async board => {
     try { 
       const newBoard = await boardsRef.add({ board })
@@ -95,31 +96,33 @@ class App extends React.Component{
     return (
       <div>
         <BrowserRouter>
-          <Switch>
-            <Route 
-              exact path='/:userId/boards'
-              render={(props) => (
-                <Home 
-                  {...props}
-                  getBoards={this.getBoards}
-                  boards={this.state.boards} 
-                  createNewBoard={this.createNewBoard} 
-                />
-              )}
-            />
-            <Route path='/board/:boardId' 
-              render={props => (
-                <Board 
-                  {...props}
-                  updateBoard={this.updateBoard}
-                  deleteBoard={this.deleteBoard}
-                  deleteList={this.deleteList}
-                />
-              )}
-            />
-            <Route component={PageNotFound} />
-            
-          </Switch>
+          <AuthProvider>
+            <Switch>
+              <Route 
+                exact path='/:userId/boards'
+                render={(props) => (
+                  <Home 
+                    {...props}
+                    getBoards={this.getBoards}
+                    boards={this.state.boards} 
+                    createNewBoard={this.createNewBoard} 
+                  />
+                )}
+              />
+              <Route path='/board/:boardId' 
+                render={props => (
+                  <Board 
+                    {...props}
+                    updateBoard={this.updateBoard}
+                    deleteBoard={this.deleteBoard}
+                    deleteList={this.deleteList}
+                  />
+                )}
+              />
+              <Route component={PageNotFound} />
+              
+            </Switch>
+          </AuthProvider>
         </BrowserRouter>
       </div>
     );
