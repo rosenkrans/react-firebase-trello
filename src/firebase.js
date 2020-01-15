@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
 
 const config = {
   apiKey: "AIzaSyD-e7knTBOZSu2F4Md3b6e04lX4vGqz-x8",
@@ -16,8 +17,10 @@ firebase.initializeApp(config)
 
 const db = firebase.firestore()
 
+const firebaseAuth = firebase.auth()
+
 const boardsRef = db.collection('boards')
 const listsRef = db.collection('lists')
 const cardsRef = db.collection('cards')
 
-export { boardsRef, listsRef, cardsRef }
+export { boardsRef, listsRef, cardsRef, firebaseAuth }
