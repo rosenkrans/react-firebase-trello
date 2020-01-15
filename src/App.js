@@ -3,6 +3,7 @@ import './App.css';
 import Board from './components/Board';
 import Home from './components/pages/Home';
 import UserForm from './components/UserForm';
+import Header from './components/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PageNotFound from './components/pages/PageNotFound';
 import { boardsRef, listsRef, cardsRef } from './firebase';
@@ -98,6 +99,7 @@ class App extends React.Component{
       <div>
         <BrowserRouter>
           <AuthProvider>
+            <Header />
             <Switch>
               <Route 
                 exact
