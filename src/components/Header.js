@@ -10,10 +10,11 @@ const Header = () => (
             <span role='img' area-label='house emoji'>&#127968;</span>
           </a>
           <h1>React Firebase Trello</h1>
-
-          <small>User: {user.email}</small>
-          <button onClick={(e) => logOut(e)}>Log Out</button>
-          <small>Please Sign In</small>
+          <div className='user-area'>
+            <small>User: {user.email}</small>
+            <button onClick={(e) => logOut(e)}>Log Out</button>
+            <small>Please Sign In</small>
+          </div>
         </React.Fragment>
       )}
     </AuthConsumer>
