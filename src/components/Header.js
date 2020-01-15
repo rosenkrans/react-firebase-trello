@@ -11,9 +11,15 @@ const Header = () => (
           </a>
           <h1>React Firebase Trello</h1>
           <div className='user-area'>
-            <small>User: {user.email}</small>
-            <button onClick={(e) => logOut(e)}>Log Out</button>
-            <small>Please Sign In</small>
+            {user.id ? (
+              <React.Fragment>
+                <small>User: {user.email}</small>
+                <button onClick={(e) => logOut(e)}>Log Out</button>
+              </React.Fragment>
+            ) : (
+              <small>Please Sign In</small>
+            )}
+            
           </div>
         </React.Fragment>
       )}
