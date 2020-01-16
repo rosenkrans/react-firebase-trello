@@ -6,7 +6,7 @@ const Header = () => (
     <AuthConsumer>
       {({ user, logOut }) => (
         <React.Fragment>
-          <a href='/'>
+          <a href={user.id ? `/${user.id}/boards` : `/`}>
             <span role='img' area-label='house emoji'>&#127968;</span>
           </a>
           <h1>React Firebase Trello</h1>
