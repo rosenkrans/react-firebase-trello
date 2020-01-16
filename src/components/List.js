@@ -2,6 +2,7 @@ import React from 'react';
 import Card from './Card';
 import PropTypes from 'prop-types';
 import { cardsRef, listsRef} from '../firebase';
+import {AuthConsumer} from './AuthContext';
 
 class List extends React.Component {
   state = {
@@ -73,14 +74,15 @@ class List extends React.Component {
 
   nameInput = React.createRef()
 
-  createNewCard = async (e) => {
+  createNewCard = async (e, userId) => {
     try {
       e.preventDefault()
       const card = {
         text: this.nameInput.current.value,
         listId: this.props.list.id,
         labels: [],
-        createdAt: new Date()
+        createdAt: new Date(),
+        user: userId
       }
       if(card.text && card.listId) {
         await cardsRef.add({ card })
@@ -110,35 +112,40 @@ class List extends React.Component {
 
   render() {
     return(
-      <div className='list'>
-        <div className="list-header">
-          {/* <p>{this.props.list.title}</p> */}
-          <input 
-            type='text'
-            name='listTitle'
-            onChange={this.updateList}
-            defaultValue={this.props.list.title}
-          />
-          <span onClick={this.deleteList}>&times;</span>
+      <AuthConsumer>
+        {({user}) => (
+          <div className='list'>
+          <div className="list-header">
+            {/* <p>{this.props.list.title}</p> */}
+            <input 
+              type='text'
+              name='listTitle'
+              onChange={this.updateList}
+              defaultValue={this.props.list.title}
+            />
+            <span onClick={this.deleteList}>&times;</span>
+          </div>
+          {Object.keys(this.state.currentCards).map(key => (
+            <Card 
+            key={key} 
+            data={this.state.currentCards[key]} />
+          ))}
+          <form 
+            onSubmit={(e) => this.createNewCard(e, user.id)} 
+            className="new-card-wrapper">
+  
+            <input
+              type='text'
+              ref={this.nameInput}
+              name='name'
+              placeholder=' + New Card' 
+            />
+  
+          </form>
         </div>
-        {Object.keys(this.state.currentCards).map(key => (
-          <Card 
-          key={key} 
-          data={this.state.currentCards[key]} />
-        ))}
-        <form 
-          onSubmit={this.createNewCard} 
-          className="new-card-wrapper">
-
-          <input
-            type='text'
-            ref={this.nameInput}
-            name='name'
-            placeholder=' + New Card' 
-          />
-
-        </form>
-      </div>
+        )}
+      </AuthConsumer>
+      
     )
   }
 }
